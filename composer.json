@@ -1,0 +1,29 @@
+{
+  "name": "tina4stack/tina4php-env",
+  "description": "Tina4 PHP Environment Functionality",
+  "license": "MIT",
+  "autoload": {
+    "files": [
+      "Tina4/Initialize.php"
+    ],
+    "classmap": [
+      "Tina4/"
+    ],
+    "psr-4": {
+      "Tina4\\": [
+        "Tina4/"
+      ]
+    }
+  },
+  "scripts": {
+    "run-tests": "./vendor/bin/phpunit tests --color --log-junit=tests/junit.xml",
+    "phpmetrics": "phpmetrics --report-html=phpmetrics --junit=tests/junit.xml ./Tina4"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9",
+    "overtrue/phplint": "^2.0"
+  },
+  "require": {
+    "tina4stack/tina4php-debug": "^2.0"
+  }
+}

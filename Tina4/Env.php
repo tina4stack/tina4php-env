@@ -40,8 +40,7 @@ class Env
      */
     final public function readParams(?string $environment): void
     {
-        if (!defined("TINA4_DOCUMENT_ROOT"))
-        {
+        if (!defined("TINA4_DOCUMENT_ROOT")) {
             define("TINA4_DOCUMENT_ROOT", "./");
         }
         $fileName = TINA4_DOCUMENT_ROOT . ".env";
@@ -59,27 +58,22 @@ class Env
                 $fileContents = explode("\n", $fileContents);
             }
             foreach ($fileContents as $id => $line) {
-                if (empty($line)) {
-                    //Ignore blanks
-                } elseif (($line[0] === "[" && $line[strlen($line) - 1] === "]") || ($line[0] === "#")) {
-                    //Ignore [Sections] && Comments #
-                } else {
-                    $variables = explode("=", $line, 2);
-                    if (isset($variables[0], $variables[1])) {
-                        if (!defined(trim($variables[0]))) {
-                            Debug::message("Defining {$variables[0]} = $variables[1]", TINA4_LOG_DEBUG);
-                            //echo 'return (defined("'.$variables[1].'") ? '.$variables[1].' : "'.$variables[1].'");';
-                            if (defined($variables[1])) {
-                                define(trim($variables[0]), eval('return (defined("' . $variables[1] . '") ? ' . $variables[1] . ' : "' . $variables[1] . '");'));
-                            } else {
-                                if (strpos($variables[1], '"') !== false || strpos($variables[1], '[') !== false) {
-                                    $variable = eval('return ' . $variables[1] . ';');
-                                } else {
-                                    $variable = $variables[1];
-                                }
-                                define(trim($variables[0]), $variable);
-                            }
+                if ($line[0] === "#" || empty($line) || ($line[0] === "[" && $line[strlen($line) - 1] === "]")) {
+                    continue;
+                }
+                $variables = explode("=", $line, 2);
+                if (isset($variables[0], $variables[1]) && !defined(trim($variables[0]))) {
+                    Debug::message("Defining {$variables[0]} = $variables[1]", TINA4_LOG_DEBUG);
+                    //echo 'return (defined("'.$variables[1].'") ? '.$variables[1].' : "'.$variables[1].'");';
+                    if (defined($variables[1])) {
+                        define(trim($variables[0]), eval('return (defined("' . $variables[1] . '") ? ' . $variables[1] . ' : "' . $variables[1] . '");'));
+                    } else {
+                        if (strpos($variables[1], '"') !== false || strpos($variables[1], '[') !== false) {
+                            $variable = eval('return ' . $variables[1] . ';');
+                        } else {
+                            $variable = $variables[1];
                         }
+                        define(trim($variables[0]), $variable);
                     }
                 }
             }

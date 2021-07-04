@@ -62,10 +62,12 @@ class Env
      */
     final public function readParams(?string $environment): void
     {
-        if (!defined("TINA4_DOCUMENT_ROOT")) {
-            define("TINA4_DOCUMENT_ROOT", "./");
+        if (defined("TINA4_DOCUMENT_ROOT")) {
+            $rootFolder = TINA4_DOCUMENT_ROOT;
+        } else {
+            $rootFolder = "./";
         }
-        $fileName = TINA4_DOCUMENT_ROOT . ".env";
+        $fileName =  $rootFolder. ".env";
 
         if (!empty($environment)) {
             $fileName .= ".{$environment}";

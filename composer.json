@@ -16,14 +16,13 @@
     }
   },
   "scripts": {
-    "run-tests": "./vendor/bin/phpunit tests --color --log-junit=tests/junit.xml",
+    "start": "php -S localhost:7147 index.php",
+    "test": "./vendor/bin/phpunit tests --color --log-junit=tests/junit.xml",
     "phpmetrics": "phpmetrics --report-html=phpmetrics --junit=tests/junit.xml ./Tina4"
   },
   "require-dev": {
     "phpunit/phpunit": "^9",
-    "overtrue/phplint": "^2.0"
-  },
-  "require": {
+    "overtrue/phplint": "^2.0",
     "tina4stack/tina4php-debug": "^2.0"
   }
 }

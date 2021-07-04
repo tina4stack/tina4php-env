@@ -31,6 +31,28 @@ class Env
         $this->readParams($environment);
     }
 
+
+    private function parseLine($line): void
+    {
+        if ($line[0] === "#" || empty($line) || ($line[0] === "[" && $line[strlen($line) - 1] === "]")) {
+            return;
+        }
+        $variables = explode("=", $line, 2);
+        if (isset($variables[0], $variables[1]) && !defined(trim($variables[0]))) {
+            Debug::message("Defining {$variables[0]} = $variables[1]", TINA4_LOG_DEBUG);
+            $variable = trim($variables[0]);
+            if ($variables[1][0] === "[" || $variables[1][0] === "\"")
+            {
+                eval("\${$variable} = {$variables[1]};");
+            } else {
+                extract([$variable => $variables[1]], EXTR_OVERWRITE);
+            }
+
+            define(trim($variables[0]), ${$variable});
+
+        }
+    }
+
     /**
      * The readEnvParams reads the environment variables from the .env.{ENVIRONMENT} file
      * @param string|null $environment
@@ -57,25 +79,9 @@ class Env
             } else {
                 $fileContents = explode("\n", $fileContents);
             }
+
             foreach ($fileContents as $id => $line) {
-                if ($line[0] === "#" || empty($line) || ($line[0] === "[" && $line[strlen($line) - 1] === "]")) {
-                    continue;
-                }
-                $variables = explode("=", $line, 2);
-                if (isset($variables[0], $variables[1]) && !defined(trim($variables[0]))) {
-                    Debug::message("Defining {$variables[0]} = $variables[1]", TINA4_LOG_DEBUG);
-                    //echo 'return (defined("'.$variables[1].'") ? '.$variables[1].' : "'.$variables[1].'");';
-                    if (defined($variables[1])) {
-                        define(trim($variables[0]), eval('return (defined("' . $variables[1] . '") ? ' . $variables[1] . ' : "' . $variables[1] . '");'));
-                    } else {
-                        if (strpos($variables[1], '"') !== false || strpos($variables[1], '[') !== false) {
-                            $variable = eval('return ' . $variables[1] . ';');
-                        } else {
-                            $variable = $variables[1];
-                        }
-                        define(trim($variables[0]), $variable);
-                    }
-                }
+                $this->parseLine($line);
             }
         } else {
             Debug::message("Created an ENV file for you {$fileName}");

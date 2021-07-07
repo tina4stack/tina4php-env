@@ -31,9 +31,15 @@ class Env
         $this->readParams($environment);
     }
 
-
+    /**
+     * Parses a line into variables
+     * @param $line
+     */
     private function parseLine($line): void
     {
+        if (empty($line)) {
+            return;
+        }
         if ($line[0] === "#" || empty($line) || ($line[0] === "[" && $line[strlen($line) - 1] === "]")) {
             return;
         }

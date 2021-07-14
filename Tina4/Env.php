@@ -92,8 +92,7 @@ class Env
                 $this->parseLine($line);
             }
         } else {
-            Debug::message("Created an ENV file for you {$fileName}");
-            file_put_contents($fileName, "[Project Settings]\nVERSION=1.0.0");
+            Debug::message("$fileName does not exist, please create one!");
         }
     }
 }

@@ -47,16 +47,18 @@ class Env
         if (isset($variables[0], $variables[1]) && !defined(trim($variables[0]))) {
             Debug::message("Defining {$variables[0]} = $variables[1]", TINA4_LOG_DEBUG);
             $variable = trim($variables[0]);
-            if ($variables[1][0] === "[" || $variables[1][0] === "\"")
+
+            if (trim($variables[1]) === "false" || trim($variables[1]) === "true" || trim($variables[1])[0] === "[" || trim($variables[1])[0] === "\"" || trim($variables[1])[0] === '"' || trim($variables[1])[0] === '"')
             {
                 eval("\${$variable} = {$variables[1]};");
             } else {
-                extract([$variable => $variables[1]], EXTR_OVERWRITE);
+                extract([$variable => trim($variables[1])], EXTR_OVERWRITE);
             }
 
             define(trim($variables[0]), ${$variable});
-
         }
+
+
     }
 
     /**

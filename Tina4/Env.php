@@ -55,6 +55,7 @@ class Env
                 extract([$variable => trim($variables[1])], EXTR_OVERWRITE);
             }
 
+            $_ENV[trim($variables[0])] = ${$variable};
             define(trim($variables[0]), ${$variable});
         }
 

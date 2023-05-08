@@ -13,5 +13,7 @@ class EnvTest extends  TestCase
         $this->assertEquals("Tina4 Project", SWAGGER_TITLE);
         $this->assertIsArray( TINA4_DEBUG_LEVEL);
         $this->assertEquals(true, TINA4_DEBUG);
+        $this->assertEquals("Tina4 Project", $_ENV["SWAGGER_TITLE"]);
+
     }
 }

@@ -48,7 +48,7 @@ class Env
             Debug::message("Defining {$variables[0]} = $variables[1]", TINA4_LOG_DEBUG);
             $variable = trim($variables[0]);
 
-            if (trim($variables[1]) === "false" || trim($variables[1]) === "true" || trim($variables[1])[0] === "[" || trim($variables[1])[0] === "\"" || trim($variables[1])[0] === '"' || trim($variables[1])[0] === '"')
+            if (count($variables) > 0 && trim($variables[1]) === "false" || trim($variables[1]) === "true" || trim($variables[1])[0] === "[" || trim($variables[1])[0] === "\"" || trim($variables[1])[0] === '"' || trim($variables[1])[0] === '"')
             {
                 eval("\${$variable} = {$variables[1]};");
             } else {
